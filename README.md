@@ -28,17 +28,16 @@ Bienvenue dans le dépôt principal de **LaGuildeInteractive** pour le projet **
    cd jeu-dynamique
    ```
 
-2. **Installer les Dépendances :**
+2. **Build docker image**
 
    ```bash
-   # Exemple pour un projet Python
-   pip install -r requirements.txt
+   docker build -t jeu-dynamique .
    ```
 
 3. **Lancer le Jeu :**
 
    ```bash
-   python main.py
+   docker run -it --rm -p 5001:5001 -p 8080:8080 -p 4001:4001 jeu-dynamique
    ```
 
 ## Contribution
