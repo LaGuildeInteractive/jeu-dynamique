@@ -1,8 +1,11 @@
+# Utiliser une image de base IPFS officielle
+FROM ipfs/go-ipfs:latest as ipfs
+
 # Utiliser une image de base Node.js officielle
 FROM node:18
 
-# Installer IPFS
-RUN npm install -g ipfs
+# Copier les binaires IPFS depuis l'image ipfs
+COPY --from=ipfs /usr/local/bin/ipfs /usr/local/bin/ipfs
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /app

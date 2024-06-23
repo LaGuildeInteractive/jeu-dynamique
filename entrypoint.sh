@@ -6,9 +6,9 @@ if [ ! -d ~/.ipfs ]; then
 fi
 
 # Activer les fonctionnalités expérimentales d'IPFS
-ipfs config --json Pubsub.Enabled true
+ipfs config --json Experimental.PubsubEnabled true
 
-# Démarrer le daemon IPFS
+# Démarrer le daemon IPFS en arrière-plan
 ipfs daemon &
 
 # Attendre que le daemon IPFS soit prêt
