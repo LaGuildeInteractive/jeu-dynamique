@@ -1,0 +1,14 @@
+{
+  "name": "jeu-dynamique",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node game.mjs"
+  },
+  "dependencies": {
+    "ipfs-http-client": "^58.0.0",
+    "inquirer": "^8.0.0"
+  }
+}
