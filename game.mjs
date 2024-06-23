@@ -4,9 +4,17 @@ import inquirer from "inquirer"
 // Configuration IPFS
 const ipfs = create({ host: "localhost", port: "5001", protocol: "http" })
 
-// Fonction pour ajouter des réalisations à IPFS
+// Constantes pour le namespace IPNS
+const IPNS_NAMESPACE =
+  "k2k4r8o4j3915ecegpbc0e4i3hiqqwohi4p9pz6x99yugp8kkadjh2qg"
+
+// Fonction pour ajouter des réalisations à IPFS et publier sur IPNS
 async function addAchievement(achievement) {
   const { cid } = await ipfs.add(JSON.stringify(achievement))
+
+  // Publier sur IPNS
+  await ipfs.name.publish(`/ipfs/${cid}`, { key: IPNS_NAMESPACE })
+
   return cid
 }
 
