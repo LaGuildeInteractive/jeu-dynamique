@@ -37,7 +37,8 @@ Bienvenue dans le dépôt principal de **LaGuildeInteractive** pour le projet **
 3. **Lancer le Jeu :**
 
    ```bash
-   docker run -it --rm -p 5001:5001 -p 8080:8080 -p 4001:4001 jeu-dynamique
+   docker run -d --name jeu-dynamique -p 5001:5001 -p 8080:8080 -p 4001:4001 -v ipfs-data:/root/.ipfs jeu-dynamique
+   docker attach jeu-dynamique
    ```
 
 ## Contribution
