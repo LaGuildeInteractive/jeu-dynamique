@@ -24,16 +24,16 @@ Bienvenue dans le dépôt principal de **LaGuildeInteractive** pour le projet **
 1. Cloner le dépôt.
 2. Construire l'image Docker :
    ```bash
-   docker buildx create --name mybuilder --use
-   docker buildx inspect mybuilder --bootstrap
-   docker buildx build --platform linux/arm64 -t guilde-jeu --load .
-   docker build -t guilde-jeu .
+   docker build -t ipfs .
    ```
 3. Lancer le conteneur :
    ```bash
-   docker run -p 8080:8080 guilde-jeu
+   docker run -d --name ipfs -p 4001:4001 -p 5001:5001 -p 8080:8080 ipfs
    ```
-4. Accéder au jeu via `http://localhost:8080`.
+4. ```bash
+   npm install
+   npm start
+   ```
 
 ## Dépendances
 
