@@ -24,13 +24,9 @@ Bienvenue dans le dépôt principal de **LaGuildeInteractive** pour le projet **
 1. Cloner le dépôt.
 2. Construire l'image Docker :
    ```bash
-   docker build -t ipfs .
+   docker-compose up --build
    ```
-3. Lancer le conteneur :
-   ```bash
-   docker run -d --name ipfs -p 4001:4001 -p 5001:5001 -p 8080:8080 ipfs
-   ```
-4. ```bash
+3. ```bash
    npm install
    npm start
    ```
