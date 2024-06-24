@@ -1,25 +1,15 @@
-import fetch from "node-fetch"
+import axios from "axios"
 
-const OLLAMA_API_URL =
-  process.env.OLLAMA_API_URL || "http://localhost:11434/generate"
-
-export async function generateCode(prompt) {
-  const response = await fetch(OLLAMA_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ prompt }),
-  })
-
-  if (!response.ok) {
-    throw new Error("Failed to generate code from Ollama")
+async function generateCode(prompt) {
+  try {
+    const response = await axios.post("http://localhost:11434/generate", {
+      prompt: prompt,
+    })
+    return response.data.code
+  } catch (error) {
+    console.error("Erreur lors de l'appel à Ollama:", error)
+    throw error
   }
-
-  const data = await response.json()
-  if (data.error) {
-    throw new Error(data.error)
-  }
-
-  return data.code
 }
+
+export { generateCode }
