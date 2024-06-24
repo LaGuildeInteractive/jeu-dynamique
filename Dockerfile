@@ -1,20 +1,8 @@
-# Utiliser une image de base officielle de Node.js
-FROM node:16
+# Utiliser l'image IPFS v0.11.0
+FROM ipfs/go-ipfs:latest
 
-# Définir le répertoire de travail à /app
-WORKDIR /app
+# Exposer les ports nécessaires
+EXPOSE 4001 5001 8080
 
-# Copier le fichier package.json et package-lock.json pour installer les dépendances
-COPY package*.json ./
-
-# Installer les dépendances
-RUN npm install
-
-# Copier le reste des fichiers de l'application
-COPY . .
-
-# Exposer le port que l'application utilisera
-EXPOSE 8080
-
-# Commande pour lancer l'application
-CMD ["node", "game.mjs"]
+# Démarrer le daemon IPFS avec PubSub activé
+CMD ["daemon", "--enable-pubsub-experiment"]

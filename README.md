@@ -19,27 +19,26 @@ Bienvenue dans le dépôt principal de **LaGuildeInteractive** pour le projet **
 - **multimedia-integration :** Éléments multimédia pour le jeu.
 - **jeu-dynamique :** Fonctionnalités principales du jeu collaboratif.
 
-## Configuration et Installation
+## Instructions
 
-1. **Cloner le Dépôt :**
-
+1. Cloner le dépôt.
+2. Construire l'image Docker :
    ```bash
-   git clone git@github.com:LaGuildeInteractive/jeu-dynamique.git
-   cd jeu-dynamique
+   docker buildx create --name mybuilder --use
+   docker buildx inspect mybuilder --bootstrap
+   docker buildx build --platform linux/arm64 -t guilde-jeu --load .
+   docker build -t guilde-jeu .
    ```
-
-2. **Build docker image**
-
+3. Lancer le conteneur :
    ```bash
-   docker build -t jeu-dynamique .
+   docker run -p 8080:8080 guilde-jeu
    ```
+4. Accéder au jeu via `http://localhost:8080`.
 
-3. **Lancer le Jeu :**
+## Dépendances
 
-   ```bash
-   docker run -d --name jeu-dynamique -p 5001:5001 -p 8080:8080 -p 4001:4001 -v ipfs-data:/root/.ipfs jeu-dynamique
-   docker attach jeu-dynamique
-   ```
+- Node.js
+- Docker
 
 ## Contribution
 
@@ -62,3 +61,7 @@ Pour toute question ou suggestion, veuillez contacter [Daniel Febrero Martin](ma
 ---
 
 Merci de votre intérêt pour le projet **Jeu Dynamique** de **LaGuildeInteractive** !
+
+## Auteur
+
+- Daniel Febrero
