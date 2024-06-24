@@ -1,49 +1,51 @@
 import ipfs from "./ipfsClient.mjs"
 import crypto from "crypto"
 
-function generateHash(username, password) {
-  return crypto
+function generateUserFilePath(username, password) {
+  const hash = crypto
     .createHash("sha256")
     .update(username + password)
     .digest("hex")
+  return `/user_files/${hash}.json`
 }
 
-export async function saveUser(user, password) {
-  try {
-    const userHash = generateHash(user.username, password)
-    const userPath = `/LaGuildeInteractive/users/${userHash}`
-    const { cid } = await ipfs.add(JSON.stringify(user))
-    await ipfs.files.write(userPath, new TextEncoder().encode(cid.toString()), {
-      create: true,
-      parents: true,
-    })
-    console.log("User information saved:", user)
-  } catch (error) {
-    console.error("Error saving user information to IPFS:", error)
-    throw error
-  }
+export async function saveUser(username, password) {
+  const hashedPassword = crypto
+    .createHash("sha256")
+    .update(password)
+    .digest("hex")
+  const userInfo = { username, password: hashedPassword }
+
+  const filePath = generateUserFilePath(username, password)
+  const buffer = Buffer.from(JSON.stringify(userInfo))
+  await ipfs.files.write(filePath, buffer, { create: true, parents: true })
+
+  return filePath
 }
 
 export async function loadUser(username, password) {
+  const filePath = generateUserFilePath(username, password)
   try {
-    const userHash = generateHash(username, password)
-    const userPath = `/LaGuildeInteractive/users/${userHash}`
     const chunks = []
-    for await (const chunk of ipfs.files.read(userPath)) {
+    for await (const chunk of ipfs.files.read(filePath)) {
       chunks.push(chunk)
     }
-    const cid = Buffer.concat(chunks).toString()
-    const contentChunks = []
-    for await (const contentChunk of ipfs.cat(cid)) {
-      contentChunks.push(contentChunk)
+    const userInfo = JSON.parse(Buffer.concat(chunks).toString())
+    const hashedPassword = crypto
+      .createHash("sha256")
+      .update(password)
+      .digest("hex")
+
+    if (userInfo.password === hashedPassword) {
+      return userInfo
+    } else {
+      throw new Error("Nom d'utilisateur ou mot de passe incorrect")
     }
-    return JSON.parse(Buffer.concat(contentChunks).toString())
   } catch (error) {
     if (error.message.includes("file does not exist")) {
-      console.log("User file does not exist.")
-      return null
+      throw new Error("Nom d'utilisateur ou mot de passe incorrect")
+    } else {
+      throw error
     }
-    console.error("Error loading user information from IPFS:", error)
-    throw error
   }
 }
