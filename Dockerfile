@@ -1,30 +1,20 @@
-# Utiliser une image de base IPFS officielle
-FROM ipfs/go-ipfs:latest as ipfs
+# Utiliser une image de base officielle de Node.js
+FROM node:16
 
-# Utiliser une image de base Node.js officielle
-FROM node:18
-
-# Copier les binaires IPFS depuis l'image ipfs
-COPY --from=ipfs /usr/local/bin/ipfs /usr/local/bin/ipfs
-
-# Définir le répertoire de travail dans le conteneur
+# Définir le répertoire de travail à /app
 WORKDIR /app
 
-# Copier package.json et package-lock.json dans le répertoire de travail
+# Copier le fichier package.json et package-lock.json pour installer les dépendances
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier le reste des fichiers de l'application dans le répertoire de travail
+# Copier le reste des fichiers de l'application
 COPY . .
 
-# Exposer les ports nécessaires pour IPFS et l'application (ajustez en fonction de vos besoins)
-EXPOSE 5001 8080 4001
+# Exposer le port que l'application utilisera
+EXPOSE 8080
 
-# Script d'entrée pour démarrer IPFS et l'application Node.js
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Commande d'entrée pour le conteneur
-CMD ["/entrypoint.sh"]
+# Commande pour lancer l'application
+CMD ["node", "game.mjs"]
