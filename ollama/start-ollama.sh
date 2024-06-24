@@ -19,4 +19,4 @@ for file in /app/src/*.mjs; do
 done
 
 # Start Ollama with the model and context
-ollama serve --port 11434 --model-path /models/DeepSeek-Coder-V2-Lite-Instruct-Q4_K_M.gguf --context-path $context_file
+ollama serve --model-path /models/DeepSeek-Coder-V2-Lite-Instruct-Q4_K_M.gguf --context-path $context_file

@@ -11,7 +11,8 @@ services:
 
   ollama:
     build:
-      context: ./ollama
+      context: .
+      dockerfile: ollama/Dockerfile
     volumes:
       - ollama-data:/root/.ollama
     ports:
