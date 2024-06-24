@@ -1,6 +1,7 @@
 import { create } from "ipfs-http-client"
 
-// Configuration IPFS
-const ipfs = create({ host: "localhost", port: "5001", protocol: "http" })
+const IPFS_API_URL = process.env.IPFS_API_URL || "http://localhost:5002"
+
+const ipfs = create({ url: IPFS_API_URL })
 
 export default ipfs

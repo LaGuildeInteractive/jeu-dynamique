@@ -7,6 +7,7 @@ import {
   unsubscribeFromAchievements,
   subscribeToAchievements,
 } from "./achievementManager.mjs"
+import { generateCode } from "./ollamaClient.mjs"
 
 async function initGame() {
   console.log("Bienvenue dans le jeu interactif!")
@@ -79,6 +80,23 @@ async function initGame() {
     if (!action.trim()) {
       console.log("Action invalide. Veuillez entrer une action valide.")
       continue
+    }
+
+    try {
+      const codePrompt = `The user has the following data: ${JSON.stringify(
+        user
+      )}. The user requested: "${action}". Generate JavaScript code to handle this request. If the request is too complex or cannot be handled, respond with an appropriate error message.`
+      const generatedCode = await generateCode(codePrompt)
+
+      console.log("Code généré par Ollama:", generatedCode)
+
+      // Evaluer le code généré (attention à la sécurité !)
+      eval(generatedCode)
+    } catch (error) {
+      console.error(
+        "Erreur lors de la génération ou de l'exécution du code:",
+        error
+      )
     }
 
     const achievement = {

@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    command: daemon --enable-pubsub-experiment
+    ports:
+      - "4002:4001"
+      - "5002:5001"
+      - "8081:8080"
+
+  ollama:
+    build:
+      context: ./ollama
+    volumes:
+      - ollama-data:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  ollama-data:
